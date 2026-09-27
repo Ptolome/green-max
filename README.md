@@ -1,32 +1,127 @@
-# React + TypeScript + Vite
+MAX Chat - Мессенджер на базе GREEN-API
+📱 Описание
+Веб-приложение для отправки и получения сообщений в мессенджере MAX через API сервиса GREEN-API. Предоставляет простой и интуитивный интерфейс чата с поддержкой реального времени.
+Возможности
+🔐 Авторизация через учетные данные GREEN-API (idInstance, apiTokenInstance)
+💬 Отправка текстовых сообщений в MAX
+📨 Получение входящих сообщений в реальном времени (HTTP polling)
+🎨 Современный темный интерфейс в стиле MAX
+✅ Индикация статуса отправки сообщений
+📱 Адаптивный дизайн для мобильных устройств
+🛠 Технологии
+React 18 - UI библиотека
+TypeScript - типизация
+Vite - сборщик проекта
+classnames - управление CSS классами
+GREEN-API - API для работы с мессенджером MAX
+📋 Требования
+Node.js 18+
+npm или yarn
+Аккаунт в GREEN-API
+Установленный мессенджер MAX на телефоне
+🚀 Установка и запуск
+1. Клонирование репозитория
+git clone <url-репозитория>
+cd max-chat
+2. Установка зависимостей 
+npm install
+3. Запуск проекта
+npm run dev
+Приложение будет доступно по адресу http://localhost:5173
+4. Сборка для продакшена
+npm run build
+npm run preview
+🔑 Настройка GREEN-API
+Получение учетных данных
+Зарегистрируйтесь на https://console.green-api.com/
+Создайте новый инстанс
+Скопируйте ID Instance и API Token Instance
+Авторизация инстанса
+В личном кабинете GREEN-API нажмите кнопку "Авторизоваться"
+Отсканируйте QR-код через приложение MAX:
+Откройте MAX на телефоне
+Перейдите в Настройки → Связанные устройства
+Нажмите "Привязать устройство"
+Наведите камеру на QR-код
+Важные настройки
+️ Обязательно очистите поле Webhook URL в настройках инстанса, иначе метод получения сообщений не будет работать!
+Для HTTP polling должны быть включены:
+✅ incomingWebhook
+✅ outgoingWebhook
+✅ stateWebhook
+📖 Использование
+Шаг 1: Авторизация
+Введите idInstance и apiTokenInstance из личного кабинета GREEN-API
+Шаг 2: Создание чата
+Введите номер телефона получателя в формате 79001234567 (без + и пробелов)
+Шаг 3: Общение
+Пишите сообщения в поле ввода
+Нажимайте кнопку отправки (самолетик)
+Входящие сообщения появляются автоматически каждые 2 секунды
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Структура проекта
 
-Currently, two official plugins are available:
+max-chat/
+── public/              # Статические файлы
+├── src/
+│   ├── components/      # React компоненты
+│   │   ├── AuthScreen.tsx      # Экран авторизации
+│   │   ├── PhoneInputScreen.tsx # Ввод номера телефона
+│   │   └── ChatScreen.tsx      # Основной чат
+│   ├── services/
+│   │   └── greenApi.ts  # Сервис для работы с GREEN-API
+│   ├── types/
+│   │   └── index.ts     # TypeScript типы
+│   ├── utils/
+│   │   └── cn.ts        # Утилита для CSS классов
+│   ├── App.tsx          # Главный компонент
+│   ├── main.tsx         # Точка входа
+│   └── App.css          # Глобальные стили
+── package.json
+├── tsconfig.json
+└── vite.config.ts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Конфигурация
+Базовый URL API можно изменить в файле src/services/greenApi.ts:
+typescript
+1
+Если у вас выделенный сервер (например, https://3100.api.green-api.com), замените URL accordingly.
+Решение проблем
+Ошибка 401 Unauthorized
+Проверьте правильность idInstance и apiTokenInstance
+Убедитесь, что инстанс авторизован (зеленый статус в личном кабинете)
+Ошибка 403 Forbidden
+Инстанс не авторизован - отсканируйте QR-код в MAX
+Аккаунт заблокирован или есть ограничения
+Ошибка 400 Bad Request (Webhook)
+Очистите поле Webhook URL в настройках инстанса
+Подождите 1-2 минуты после сохранения настроек
+Сообщения не приходят
+Проверьте, что номер телефона введен правильно (формат: 79001234567)
+Убедитесь, что собеседник пишет именно с этого номера
+Проверьте консоль браузера (F12) на наличие ошибок
+Ошибка 408 Request Timeout
+Нормальное поведение при long-polling
+Приложение автоматически переподключается
+📝 Формат сообщений
+Отправка
+json
+1234
+Получение
+json
+12345678910111213141516
+Безопасность
+⚠️ Важно:
+Никогда не публикуйте apiTokenInstance в открытом доступе
+Для продакшена используйте переменные окружения (.env)
+API ключи дают полный доступ к вашему аккаунту MAX
+📄 Лицензия
+MIT License
+👥 Авторы
+Разработано с использованием GREEN-API
+Поддержка
+Документация GREEN-API: https://green-api.com/docs/
+Техподдержка: support@green-api.com
+Telegram канал: @green_api_support
+Версия: 1.0.0
+Последнее обновление: Сентябрь 2026
